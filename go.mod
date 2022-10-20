@@ -1,4 +1,4 @@
-module github.com/infiotinc/netskopebwan
+module github.com/infiotinc/netskopebwan-go-client
 
 go 1.18
 
