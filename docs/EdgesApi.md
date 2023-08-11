@@ -224,6 +224,7 @@ Name | Type | Description  | Notes
  **afterCursor** | **optional.String**| Start point | 
  **beforeCursor** | **optional.String**| End Point | 
  **childTenantId** | **optional.String**| Tenant Id where the resource exists (Use this parameter if you wish to execute you query to a specific tenant). Make sure the Tenant should be a child of the Tenant where the API token is created | 
+ **getTemplates** | **optional.Bool**| if present, templates will be obtained | 
 
 ### Return type
 

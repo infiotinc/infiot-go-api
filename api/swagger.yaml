@@ -71,7 +71,7 @@ info:
     # <a name="versioning"></a>Versioning
 
     All our APIs are versioned. Our current API version is `v1` and we are continuously working on improving it further and provide additional endpoints. If there are any changes to an API which either changes the response format or request parameter, we will increment the version.
-  version: v5
+  version: v9
 servers:
 - url: https://virtserver.swaggerhub.com/infiot/infiot-api/v2
   description: SwaggerHub API Auto Mocking
@@ -850,6 +850,222 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InfiotErrorResponse'
+  /policies/{id}/block-src-ip:
+    post:
+      tags:
+      - Policies
+      summary: Create new firewall block rule for a specific source IP
+      description: |-
+        Create a new firewall block rule in a policy of an organizant tenant. childTenantId is a mandatory parameter to be passed if the API is executed using a MSP or Master MSP tenant token. childTenantId should be organization tenant's Id when accessed from MasterMSP/MSP tenant. It can be empty when using an Organization tenant token. <br> <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token.<br>
+
+           | `childTenantId`      | Behavior |
+           |-----------------|-------------|
+           |  Not passed  | Error Message Code : `400`|
+           | Passed |Policy rule is created successfully based on the Request body args provided.
+      operationId: addDenySourceIPRuleToPolicy
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPolicyFirewallRuleInput'
+        required: true
+      responses:
+        "200":
+          description: Policy firewall rule created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /policies/{id}/block-src-ip/{ip}:
+    delete:
+      tags:
+      - Policies
+      summary: Delete a policy firewall rule using match source IP
+      description: |-
+        Delete a policy firewall rule by passing the Policy id and source IP as a parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId`      | Behavior |
+           |-----------------|-------------|
+           |  Not passed  | Error Message Code : `400`|
+           | Passed |Policy rule is successfully deleted
+      operationId: deleteDenySourceIPRuleFromPolicy
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: ip
+        in: path
+        description: IP
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: ipv4
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      responses:
+        "200":
+          description: Policy rule deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /policies/{id}/qos-rule-src-ip:
+    post:
+      tags:
+      - Policies
+      summary: Create new QoS rule for a specific source IP
+      description: |-
+        Create a new QoS rule in a policy of an organizant tenant. childTenantId is a mandatory parameter to be passed if the API is executed using a MSP or Master MSP tenant token. childTenantId should be organization tenant's Id when accessed from MasterMSP/MSP tenant. It can be empty when using an Organization tenant token. <br> <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token.<br>
+
+           | `childTenantId`      | Behavior |
+           |-----------------|-------------|
+           |  Not passed  | Error Message Code : `400`|
+           | Passed |Policy rule is created successfully based on the Request body args provided.
+      operationId: addQoSSourceIPRuleToPolicy
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPolicyQoSRuleInput'
+        required: true
+      responses:
+        "200":
+          description: Policy QoS rule created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /policies/{id}/qos-rule-src-ip/{ip}:
+    delete:
+      tags:
+      - Policies
+      summary: Delete a policy QoS rule using match source IP
+      description: |-
+        Delete a policy QoS rule by passing the Policy id and source IP as a parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId`      | Behavior |
+           |-----------------|-------------|
+           |  Not passed  | Error Message Code : `400`|
+           | Passed |Policy rule is successfully deleted
+      operationId: deleteQoSSourceIPRuleFromPolicy
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: ip
+        in: path
+        description: IP
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: ipv4
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      responses:
+        "200":
+          description: Policy rule deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Policy'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
   /edges:
     get:
       tags:
@@ -904,6 +1120,15 @@ paths:
         schema:
           type: string
           default: ""
+      - name: getTemplates
+        in: query
+        description: "if present, templates will be obtained"
+        required: false
+        allowEmptyValue: true
+        style: form
+        explode: true
+        schema:
+          type: boolean
       responses:
         "200":
           description: Edge List
@@ -1894,8 +2119,8 @@ paths:
         Notice the difference in the mandatory request body parameters for both the options below <br>
            | Creation Type      | Mandatory Request Body Parameters |
            |--------------------|-------------|
-           |  Clone From Template  | `"sourceTenantId"` `"sourceObjectId"` `"name"`|
-           |  Create a new Policy | `"name"` |
+           |  Clone From Template  | `"sourceTenantId"` `"sourceObjectId"` `"mdplc_name"`|
+           |  Create a new Policy | `"mdplc_name"` |
       operationId: addDevicePolicy
       parameters:
       - name: childTenantId
@@ -2072,6 +2297,796 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/system/load:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway system load time series statistics
+      description: |-
+        Retrieve the system load statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | System load statistics are succesfully returned   |
+      operationId: getGatewayLoadStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      - name: startDatetime
+        in: query
+        description: |-
+          Timestamp indicating the start of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: endDatetime
+        in: query
+        description: |-
+          Timestamp indicating the end of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: System load statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaySysLoadStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/system/uptime:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway uptime time series statistics
+      description: |-
+        Retrieve the uptime statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | Uptime statistics are succesfully returned   |
+      operationId: getGatewayUptimeStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      - name: startDatetime
+        in: query
+        description: |-
+          Timestamp indicating the start of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: endDatetime
+        in: query
+        description: |-
+          Timestamp indicating the end of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Uptime statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaySysUptimeStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/system/memory:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway memory time series statistics
+      description: |-
+        Retrieve the memory statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | Memory statistics are succesfully returned   |
+      operationId: getGatewayMemoryStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      - name: startDatetime
+        in: query
+        description: |-
+          Timestamp indicating the start of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: endDatetime
+        in: query
+        description: |-
+          Timestamp indicating the end of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Memory statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaySysMemoryStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/system/wifi:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway WiFi strength time series statistics
+      description: |-
+        Retrieve the WiFi strength statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | WiFi strength statistics are succesfully returned   |
+      operationId: getGatewayWiFiStrengthStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      - name: startDatetime
+        in: query
+        description: |-
+          Timestamp indicating the start of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: endDatetime
+        in: query
+        description: |-
+          Timestamp indicating the end of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: WiFi strength statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaySysWiFiStrengthStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/system/lte:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway LTE signal time series statistics
+      description: |-
+        Retrieve the LTE signal statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | LTE signal statistics are succesfully returned   |
+      operationId: getGatewayLTESignalStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      - name: startDatetime
+        in: query
+        description: |-
+          Timestamp indicating the start of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: endDatetime
+        in: query
+        description: |-
+          Timestamp indicating the end of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: LTE signal statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaySysLTESignalStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/wan/paths_links:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway paths and links time series metrics
+      description: |-
+        Retrieve the paths and links statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | paths and links statistics are succesfully returned   |
+      operationId: getGatewayPathAndLinkStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      - name: startDatetime
+        in: query
+        description: |-
+          Timestamp indicating the start of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: endDatetime
+        in: query
+        description: |-
+          Timestamp indicating the end of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: metric
+        in: query
+        description: String indicating what metric is to be returned by wan statistics
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - latency
+          - jitter
+          - rx_loss
+          - tx_loss
+          - rx_throughput
+          - tx_throughput
+          - rx_bytes
+          - tx_bytes
+          - rx_packets
+          - tx_packets
+      responses:
+        "200":
+          description: paths and links statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayWANPathsAndLinksStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/wan/paths_links_totals:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway paths and links aggregated metrics
+      description: |-
+        Retrieve the aggregated paths and links statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | Aggregated paths and links statistics are succesfully returned   |
+      operationId: getGatewayAggregatedPathAndLinkStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      - name: startDatetime
+        in: query
+        description: |-
+          Timestamp indicating the start of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: endDatetime
+        in: query
+        description: |-
+          Timestamp indicating the end of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Aggregated paths and links statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayWANAggregatedPathsAndLinksStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/devices/devices_totals:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway devices aggregated metrics
+      description: |-
+        Retrieve the aggregated devices statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | Aggregated devices statistics are succesfully returned   |
+      operationId: getGatewayAggregatedDeviceStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      - name: startDatetime
+        in: query
+        description: |-
+          Timestamp indicating the start of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: endDatetime
+        in: query
+        description: |-
+          Timestamp indicating the end of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Aggregated devices statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayDevicesAggregatedDeviceStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/devices/device_flows_totals:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway device flows aggregated metrics
+      description: |-
+        Retrieve the aggregated device flows statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | Aggregated device flows statistics are succesfully returned   |
+      operationId: getGatewayAggregatedDeviceFlowStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      - name: startDatetime
+        in: query
+        description: |-
+          Timestamp indicating the start of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: endDatetime
+        in: query
+        description: |-
+          Timestamp indicating the end of the queried time range, in ISO 8601 format.
+          For example '2019-05-08T05:30:30.206Z'
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date-time
+      - name: ip
+        in: query
+        description: IP of the device whose flow stats are to be obtained
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: ipv4
+      responses:
+        "200":
+          description: Aggregated device flows statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayDevicesAggregatedDeviceFlowStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/overview/interfaces_latest:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway interfaces latest metrics
+      description: |-
+        Retrieve the latest interfaces statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | Latest interfaces statistics are succesfully returned   |
+      operationId: getGatewayLatestInterfaceStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      responses:
+        "200":
+          description: Latest interfaces statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayInterfacesLatestStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/overview/paths_latest:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway paths latest metrics
+      description: |-
+        Retrieve the latest paths statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | Latest paths statistics are succesfully returned   |
+      operationId: getGatewayLatestPathStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      responses:
+        "200":
+          description: Latest paths statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayPathsLatestStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
+  /monitoring/gateways/{id}/overview/routes_latest:
+    get:
+      tags:
+      - Monitoring
+      summary: Get gateway routes latest metrics
+      description: |-
+        Retrieve the latest routes statistics for a gateway ID and timeframe given as parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br>
+        <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>
+
+           | `childTenantId` | Behavior                  |
+           |-----------------|---------------------------|
+           |  Not passed     | Error Message Code : `400`|
+           |  Passed         | Latest routes statistics are succesfully returned   |
+      operationId: getGatewayLatestRouteStatsByID
+      parameters:
+      - name: id
+        in: path
+        description: Identifier
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: childTenantId
+        in: query
+        description: Tenant Id where the resource exists (Use this parameter if you
+          wish to execute you query to a specific tenant). Make sure the Tenant should
+          be a child of the Tenant where the API token is created
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: ""
+      responses:
+        "200":
+          description: Latest routes statistics are succesfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayRoutesLatestStats'
+        default:
+          description: Standard Infiot Error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfiotErrorResponse'
 components:
   schemas:
     InfiotErrorResponse:
@@ -2087,11 +3102,11 @@ components:
         Tenant type of an already created tenant can't be modified, ignored in
         put request body
       writeOnly: true
+      default: Organization
       enum:
       - Master MSP
       - MSP
       - Organization
-      default: Organization
     UserRole:
       type: string
       enum:
@@ -2144,6 +3159,17 @@ components:
           $ref: '#/components/schemas/UserRef'
         modifiedBy:
           $ref: '#/components/schemas/UserRef'
+    TimeSeriesProps:
+      type: object
+      properties:
+        time:
+          type: array
+          description: |-
+            Timestamps in ISO 8601 format, representing the time slots of the monitoring data.
+            For example '2019-05-08T05:30:30.26Z'
+          items:
+            type: string
+            format: date-time
     Tenant:
       required:
       - domainNames
@@ -2331,13 +3357,14 @@ components:
       type: string
       description: Edge's hardware model
       writeOnly: true
+      default: iX100W
       enum:
       - iX100W
       - iX101CW
       - iXVirtual
       - iX1000W
       - iX3000
-      default: iX100W
+      - Client
     EdgeOverlayConfiguration:
       type: object
       properties:
@@ -2393,6 +3420,33 @@ components:
         name: name
         neighbor: neighbor
         bfdMultiplier: 5
+    ClientConfiguration:
+      type: object
+      properties:
+        alwaysOn:
+          type: boolean
+        disableVif:
+          type: boolean
+        dnsSuffixes:
+          type: array
+          items:
+            type: string
+        ipv4DnsServers:
+          type: array
+          items:
+            type: string
+            format: ipv4
+        ipv4PoolRanges:
+          $ref: '#/components/schemas/ClientIpv4PoolRanges'
+        assignedVirtualIPAddress:
+          type: string
+          format: ipv4
+    ClientIpv4PoolRanges:
+      type: array
+      description: "IP Address Pools, can be used with Client models"
+      items:
+        $ref: '#/components/schemas/ClientIpv4PoolRanges_inner'
+      x-schema-name: ClientIpv4PoolRanges
     StaticRoute:
       required:
       - destination
@@ -2522,10 +3576,10 @@ components:
           default: 4000
         dataUsagePeriod:
           type: string
+          default: monthly
           enum:
           - weekly
           - monthly
-          default: monthly
         dataUsagePeriodStartDate:
           type: string
           format: date-time
@@ -2538,11 +3592,11 @@ components:
       properties:
         tag:
           type: string
+          default: wired
           enum:
           - wired
           - wireless
           - private
-          default: wired
         isBackup:
           type: boolean
           default: false
@@ -2582,10 +3636,10 @@ components:
       properties:
         state:
           type: string
+          default: backup
           enum:
           - master
           - backup
-          default: backup
         virtualRouterId:
           maximum: 255
           minimum: 1
@@ -2612,17 +3666,11 @@ components:
         priority: 128
         virtualIpv4: virtualIpv4
     DhcpRelayServerSettings:
-      type: object
-      properties:
-        relayServerIpList:
-          type: array
-          items:
-            type: string
-            format: ipv4
-      example:
-        relayServerIpList:
-        - relayServerIpList
-        - relayServerIpList
+      type: array
+      items:
+        type: string
+        format: ipv4
+      x-schema-name: DhcpRelayServerSettings
     DhcpServerSettings:
       type: object
       properties:
@@ -2693,11 +3741,11 @@ components:
             $ref: '#/components/schemas/RadiusSetting'
         mode:
           type: string
+          default: routed
           enum:
           - routed
           - access
           - trunk
-          default: routed
         allowedVlans:
           type: array
           items:
@@ -2730,10 +3778,10 @@ components:
           default: 1500
         mtuDiscovery:
           type: string
+          default: auto
           enum:
           - auto
           - custom
-          default: auto
         isDisabled:
           type: boolean
           default: false
@@ -2841,9 +3889,8 @@ components:
         mtu: 1
         mtuDiscovery: auto
         dhcpRelayServerSetting:
-          relayServerIpList:
-          - relayServerIpList
-          - relayServerIpList
+        - dhcpRelayServerSetting
+        - dhcpRelayServerSetting
         mode: routed
         proxyArpSettings:
         - ipv4Mask: ipv4Mask
@@ -2916,9 +3963,9 @@ components:
       properties:
         mode:
           type: string
+          default: access_point
           enum:
           - access_point
-          default: access_point
         ssid:
           maxLength: 32
           type: string
@@ -2928,10 +3975,10 @@ components:
         freq:
           type: integer
           description: frequency of the wifi radio
+          default: 2400
           enum:
           - 2400
           - 5000
-          default: 2400
         channel:
           type: integer
           description: "radio channel to use, its ok to leave this emtpy"
@@ -3110,9 +4157,8 @@ components:
           mtu: 1
           mtuDiscovery: auto
           dhcpRelayServerSetting:
-            relayServerIpList:
-            - relayServerIpList
-            - relayServerIpList
+          - dhcpRelayServerSetting
+          - dhcpRelayServerSetting
           mode: routed
           proxyArpSettings:
           - ipv4Mask: ipv4Mask
@@ -3228,9 +4274,8 @@ components:
           mtu: 1
           mtuDiscovery: auto
           dhcpRelayServerSetting:
-            relayServerIpList:
-            - relayServerIpList
-            - relayServerIpList
+          - dhcpRelayServerSetting
+          - dhcpRelayServerSetting
           mode: routed
           proxyArpSettings:
           - ipv4Mask: ipv4Mask
@@ -3441,9 +4486,8 @@ components:
             mtu: 1
             mtuDiscovery: auto
             dhcpRelayServerSetting:
-              relayServerIpList:
-              - relayServerIpList
-              - relayServerIpList
+            - dhcpRelayServerSetting
+            - dhcpRelayServerSetting
             mode: routed
             proxyArpSettings:
             - ipv4Mask: ipv4Mask
@@ -3559,9 +4603,8 @@ components:
             mtu: 1
             mtuDiscovery: auto
             dhcpRelayServerSetting:
-              relayServerIpList:
-              - relayServerIpList
-              - relayServerIpList
+            - dhcpRelayServerSetting
+            - dhcpRelayServerSetting
             mode: routed
             proxyArpSettings:
             - ipv4Mask: ipv4Mask
@@ -3761,9 +4804,8 @@ components:
             mtu: 1
             mtuDiscovery: auto
             dhcpRelayServerSetting:
-              relayServerIpList:
-              - relayServerIpList
-              - relayServerIpList
+            - dhcpRelayServerSetting
+            - dhcpRelayServerSetting
             mode: routed
             proxyArpSettings:
             - ipv4Mask: ipv4Mask
@@ -3879,9 +4921,8 @@ components:
             mtu: 1
             mtuDiscovery: auto
             dhcpRelayServerSetting:
-              relayServerIpList:
-              - relayServerIpList
-              - relayServerIpList
+            - dhcpRelayServerSetting
+            - dhcpRelayServerSetting
             mode: routed
             proxyArpSettings:
             - ipv4Mask: ipv4Mask
@@ -4005,6 +5046,365 @@ components:
           activated: true
       allOf:
       - $ref: '#/components/schemas/PagedResponse'
+    GatewaySysLoadStats:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/GatewaySysLoadStats_data'
+      example:
+        data:
+          avg_load_15min:
+          - 1.4658129
+          - 1.4658129
+          avg_load_5min:
+          - 6.0274563
+          - 6.0274563
+          avg_load_1min:
+          - 0.8008282
+          - 0.8008282
+    GatewaySysUptimeStats:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/GatewaySysUptimeStats_data'
+      example:
+        data:
+          avg_uptime:
+          - 0.8008282
+          - 0.8008282
+    GatewaySysMemoryStats:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/GatewaySysMemoryStats_data'
+      example:
+        data:
+          avg_free:
+          - 6.0274563
+          - 6.0274563
+          avg_total:
+          - 1.4658129
+          - 1.4658129
+          avg_buffered:
+          - 0.8008282
+          - 0.8008282
+    GatewaySysWiFiStrengthStats:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/GatewaySysWiFiStrengthStats_data'
+      example:
+        data:
+          ssids:
+          - - ssids
+            - ssids
+          - - ssids
+            - ssids
+          wifi_frequency:
+          - 5
+          - 5
+          wifi_signal_strength:
+          - 2
+          - 2
+          channel_num:
+          - 0
+          - 0
+          txrate:
+          - 5
+          - 5
+          errors:
+          - 6
+          - 6
+          rxrate:
+          - 1
+          - 1
+    GatewaySysLTESignalStats:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/GatewaySysLTESignalStats_data'
+      example:
+        data:
+          avg_signal_quality:
+          - 6.0274563
+          - 6.0274563
+          avg_num_disconnects:
+          - 0.8008282
+          - 0.8008282
+    GatewayWANPathsAndLinksStats:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: array
+            description: "One array for each path and link found, indicating the required\
+              \ metric values"
+            items:
+              type: number
+              format: float
+          allOf:
+          - $ref: '#/components/schemas/TimeSeriesProps'
+      example:
+        data: ""
+    GatewayWANAggregatedPathsAndLinksStats:
+      type: object
+      properties:
+        data:
+          type: array
+          description: "One object for each path and link found, containing all its\
+            \ metrics"
+          items:
+            $ref: '#/components/schemas/GatewayWANAggregatedPathsAndLinksStats_data'
+      example:
+        data:
+        - total_rx_packets: 1.4894159
+          avg_latency: 7.0614014
+          max_rx_throughput: 2.302136
+          isp: isp
+          ip: ip
+          link: link
+          latest_tx_bandwidth: 6.0274563
+          avg_rx_throughput: 5.637377
+          total_tx_packets: 6.846853
+          overlay_ip: overlay_ip
+          total_tx_bytes: 1.0246457
+          total_rx_bytes: 1.2315135
+          latest_rx_bandwidth: 0.8008282
+          avg_loss: 4.145608
+          max_loss: 7.386282
+          max_latency: 9.301444
+          peer: peer
+          max_jitter: 2.027123
+          avg_tx_throughput: 1.4658129
+          max_tx_throughput: 5.962134
+          avg_jitter: 3.6160767
+        - total_rx_packets: 1.4894159
+          avg_latency: 7.0614014
+          max_rx_throughput: 2.302136
+          isp: isp
+          ip: ip
+          link: link
+          latest_tx_bandwidth: 6.0274563
+          avg_rx_throughput: 5.637377
+          total_tx_packets: 6.846853
+          overlay_ip: overlay_ip
+          total_tx_bytes: 1.0246457
+          total_rx_bytes: 1.2315135
+          latest_rx_bandwidth: 0.8008282
+          avg_loss: 4.145608
+          max_loss: 7.386282
+          max_latency: 9.301444
+          peer: peer
+          max_jitter: 2.027123
+          avg_tx_throughput: 1.4658129
+          max_tx_throughput: 5.962134
+          avg_jitter: 3.6160767
+    GatewayDevicesAggregatedDeviceStats:
+      type: object
+      properties:
+        data:
+          type: array
+          description: "One object for each device found, containing all its metrics"
+          items:
+            $ref: '#/components/schemas/GatewayDevicesAggregatedDeviceStats_data'
+      example:
+        data:
+        - tx_packets: 1.4658129
+          ipv4: ipv4
+          mac_addr: mac_addr
+          vnat_ips:
+          - vnat_ips
+          - vnat_ips
+          name: name
+          rx_bytes: 6.0274563
+          flows_number: 5.637377
+          tx_bytes: 0.8008282
+          rx_packets: 5.962134
+        - tx_packets: 1.4658129
+          ipv4: ipv4
+          mac_addr: mac_addr
+          vnat_ips:
+          - vnat_ips
+          - vnat_ips
+          name: name
+          rx_bytes: 6.0274563
+          flows_number: 5.637377
+          tx_bytes: 0.8008282
+          rx_packets: 5.962134
+    GatewayDevicesAggregatedDeviceFlowStats:
+      type: object
+      properties:
+        data:
+          type: array
+          description: "One object for each device flow found, containing all its\
+            \ metrics"
+          items:
+            $ref: '#/components/schemas/GatewayDevicesAggregatedDeviceFlowStats_data'
+      example:
+        data:
+        - flow_last_packet_ts: flow_last_packet_ts
+          dest_urls:
+          - dest_urls
+          - dest_urls
+          protocol_number: 5.962134
+          concat_app_displaynames: concat_app_displaynames
+          concat_policies: concat_policies
+          src_ip: src_ip
+          src_port: src_port
+          overlay_ip_tx: overlay_ip_tx
+          vnat_ips:
+          - vnat_ips
+          - vnat_ips
+          dest_ip: dest_ip
+          avg_app_latency: 1.4658129
+          interface_tx: interface_tx
+          rx_bytes: 6.0274563
+          scheduler_queue: scheduler_queue
+          concat_peers: concat_peers
+          concat_app_ids: concat_app_ids
+          link_name: link_name
+          dest_port: dest_port
+          flow_first_packet_ts: flow_first_packet_ts
+          tx_bytes: 0.8008282
+          interface_rx: interface_rx
+        - flow_last_packet_ts: flow_last_packet_ts
+          dest_urls:
+          - dest_urls
+          - dest_urls
+          protocol_number: 5.962134
+          concat_app_displaynames: concat_app_displaynames
+          concat_policies: concat_policies
+          src_ip: src_ip
+          src_port: src_port
+          overlay_ip_tx: overlay_ip_tx
+          vnat_ips:
+          - vnat_ips
+          - vnat_ips
+          dest_ip: dest_ip
+          avg_app_latency: 1.4658129
+          interface_tx: interface_tx
+          rx_bytes: 6.0274563
+          scheduler_queue: scheduler_queue
+          concat_peers: concat_peers
+          concat_app_ids: concat_app_ids
+          link_name: link_name
+          dest_port: dest_port
+          flow_first_packet_ts: flow_first_packet_ts
+          tx_bytes: 0.8008282
+          interface_rx: interface_rx
+    GatewayInterfacesLatestStats:
+      type: object
+      properties:
+        data:
+          type: array
+          description: "One object for each interface found, containing all its metrics"
+          items:
+            $ref: '#/components/schemas/GatewayInterfacesLatestStats_data'
+      example:
+        data:
+        - public_ip: public_ip
+          bytes_tx: 6
+          bytes_rx: 0
+          isp: isp
+          wifi_stats:
+            rx_rate: 7
+            tx_rate: 9
+            signal_strength: 2
+            ssid: ssid
+            frequency: 5
+            channel_number: 3
+            errors_count: 2
+          packets_tx: 5
+          cellular_stats:
+            iccid: iccid
+            signal_quality: 7
+            imei: imei
+            cell_id: 4
+            apn: apn
+          packets_rx: 1
+          state: state
+          type: type
+          cidr_ip: cidr_ip
+        - public_ip: public_ip
+          bytes_tx: 6
+          bytes_rx: 0
+          isp: isp
+          wifi_stats:
+            rx_rate: 7
+            tx_rate: 9
+            signal_strength: 2
+            ssid: ssid
+            frequency: 5
+            channel_number: 3
+            errors_count: 2
+          packets_tx: 5
+          cellular_stats:
+            iccid: iccid
+            signal_quality: 7
+            imei: imei
+            cell_id: 4
+            apn: apn
+          packets_rx: 1
+          state: state
+          type: type
+          cidr_ip: cidr_ip
+    GatewayPathsLatestStats:
+      type: object
+      properties:
+        data:
+          type: array
+          description: "One object for each path found, containing all its metrics"
+          items:
+            $ref: '#/components/schemas/GatewayPathsLatestStats_data'
+      example:
+        data:
+        - local_ip: local_ip
+          jitter: 1
+          bytes_tx: 6
+          loss_tx: 2
+          bytes_rx: 0
+          latency: 5
+          loss_rx: 5
+          link: link
+          packets_tx: 9
+          overlay_ip_name: overlay_ip_name
+          packets_rx: 7
+          overlay_ip: overlay_ip
+        - local_ip: local_ip
+          jitter: 1
+          bytes_tx: 6
+          loss_tx: 2
+          bytes_rx: 0
+          latency: 5
+          loss_rx: 5
+          link: link
+          packets_tx: 9
+          overlay_ip_name: overlay_ip_name
+          packets_rx: 7
+          overlay_ip: overlay_ip
+    GatewayRoutesLatestStats:
+      type: object
+      properties:
+        data:
+          type: array
+          description: "One object for each route found, containing its metrics"
+          items:
+            $ref: '#/components/schemas/GatewayRoutesLatestStats_data'
+      example:
+        data:
+        - metric: 0
+          netmask: netmask
+          route_type: route_type
+          interface_name: interface_name
+          gateway_ip: gateway_ip
+          gateway_name: gateway_name
+        - metric: 0
+          netmask: netmask
+          route_type: route_type
+          interface_name: interface_name
+          gateway_ip: gateway_ip
+          gateway_name: gateway_name
     CloneIdInput:
       type: object
       properties:
@@ -4027,6 +5427,10 @@ components:
           type: string
         assignedPolicy:
           $ref: '#/components/schemas/PolicyRef'
+        isTemplate:
+          type: boolean
+        ipv4PoolRanges:
+          $ref: '#/components/schemas/ClientIpv4PoolRanges'
       allOf:
       - $ref: '#/components/schemas/CloneIdInput'
     UpdateEdgeInput:
@@ -4075,6 +5479,8 @@ components:
             $ref: '#/components/schemas/InboundNatRule'
         interfaces:
           $ref: '#/components/schemas/InterfaceList'
+        clientConfiguration:
+          $ref: '#/components/schemas/ClientConfiguration'
     EdgeRef:
       type: object
       properties:
@@ -4098,6 +5504,8 @@ components:
         name:
           type: string
           description: The name of the policy
+        type:
+          $ref: '#/components/schemas/PolicyType'
         assignedEdges:
           type: array
           readOnly: true
@@ -4115,6 +5523,7 @@ components:
         - assignedEdges
         name: name
         id: id
+        type: gateway
         config:
           pcfg_url_filter:
             pcfg_uf_blocklist:
@@ -4337,6 +5746,8 @@ components:
       properties:
         name:
           type: string
+        type:
+          $ref: '#/components/schemas/PolicyType'
         hubs:
           type: array
           items:
@@ -4345,6 +5756,29 @@ components:
           $ref: '#/components/schemas/PolicyConfig'
       allOf:
       - $ref: '#/components/schemas/CloneIdInput'
+    AddPolicyFirewallRuleInput:
+      type: object
+      properties:
+        ip:
+          $ref: '#/components/schemas/IP4Address'
+    AddPolicyQoSRuleInput:
+      type: object
+      properties:
+        ip:
+          $ref: '#/components/schemas/IP4Address'
+        priority:
+          $ref: '#/components/schemas/PolicyTrafficPriority'
+    PolicyTrafficPriority:
+      type: string
+      description: Priority of the traffic
+      default: auto
+      enum:
+      - high
+      - normal
+      - low
+      - drop
+      - drop_with_log
+      - auto
     L4Protocols:
       type: string
       enum:
@@ -4358,13 +5792,20 @@ components:
       type: integer
     WebReputation:
       type: string
+      default: Moderate Risk
       enum:
       - Trustworthy
       - Low Risk
       - Moderate Risk
       - Suspicious
       - High Risk
-      default: Moderate Risk
+    PolicyType:
+      type: string
+      description: The type of the policy
+      default: gateway
+      enum:
+      - gateway
+      - client
     TrafficMatchCriteria:
       type: object
       properties:
@@ -4437,10 +5878,10 @@ components:
         cmap_match_type:
           type: string
           description: match type can be all (logical AND) or any (logical OR)
+          default: any
           enum:
           - all
           - any
-          default: any
         cmap_match_criteria:
           $ref: '#/components/schemas/TrafficMatchCriteria'
       example:
@@ -4536,17 +5977,17 @@ components:
         sch_tx_rate_limit_type:
           type: string
           description: choose between policing and shaping for rate limiting
+          default: policer
           enum:
           - policer
           - shaper
-          default: policer
         sch_drop_algo:
           type: string
           description: drop strategy for policing and when shaping queue is full
+          default: tail_drop
           enum:
           - tail_drop
           - wred
-          default: tail_drop
         sch_queue_limit_bytes:
           type: integer
           description: capacity of the shaping queue
@@ -4573,26 +6014,17 @@ components:
       type: object
       properties:
         priority:
-          type: string
-          description: Priority of the traffic
-          enum:
-          - high
-          - normal
-          - low
-          - drop
-          - drop_with_log
-          - auto
-          default: auto
+          $ref: '#/components/schemas/PolicyTrafficPriority'
         class:
           type: string
           description: Classification of traffic
+          default: auto
           enum:
           - voice
           - video
           - transactional
           - bulk
           - auto
-          default: auto
       example:
         priority: auto
         class: auto
@@ -4601,11 +6033,11 @@ components:
       properties:
         lnks_link_steering_mode:
           type: string
+          default: auto
           enum:
           - auto
           - interface
           - wan
-          default: auto
         lnks_via:
           $ref: '#/components/schemas/PolicyLinkSteeringAction_lnks_via'
         lnks_interface:
@@ -4740,9 +6172,9 @@ components:
       properties:
         snmp_version:
           type: string
+          default: v2c
           enum:
           - v2c
-          default: v2c
         snmp_community:
           type: string
           default: public
@@ -4795,10 +6227,10 @@ components:
           default: ""
         protocol:
           type: string
+          default: udp
           enum:
           - tcp
           - udp
-          default: udp
         port:
           type: integer
           default: 514
@@ -4820,10 +6252,10 @@ components:
         format:
           type: string
           description: output format type
+          default: string
           enum:
           - json
           - string
-          default: string
       example:
         protocol: udp
         port: 1
@@ -5291,8 +6723,8 @@ components:
               dsrn_rx_capacity: dsrn_rx_capacity
               dsrn_isoverlay: true
               dsrn_if_geolocation:
-                ds_if_loclat: 4.863159081028840091676102019846439361572265625
-                ds_if_loclng: 6.07389808578115175663469926803372800350189208984375
+                ds_if_loclat: 4.86315908102884
+                ds_if_loclng: 6.073898085781152
             - dsrn_if_ispname: dsrn_if_ispname
               dsrn_address:
               - dsrn_address
@@ -5357,14 +6789,14 @@ components:
               dsrn_rx_capacity: dsrn_rx_capacity
               dsrn_isoverlay: true
               dsrn_if_geolocation:
-                ds_if_loclat: 4.863159081028840091676102019846439361572265625
-                ds_if_loclng: 6.07389808578115175663469926803372800350189208984375
+                ds_if_loclat: 4.86315908102884
+                ds_if_loclng: 6.073898085781152
           dsr_loadavg:
             dsrl_prunning: 6
             dsrl_pcount: 0
-            dsrl_l15min: 7.05877035158235610623478351044468581676483154296875
-            dsrl_l1min: 7.14353804701230643559028976596891880035400390625
-            dsrl_l5min: 0.885137473901165261480628032586537301540374755859375
+            dsrl_l15min: 7.058770351582356
+            dsrl_l1min: 7.143538047012306
+            dsrl_l5min: 0.8851374739011653
           dsr_containers:
           - dsrco_pcount: 0
             dsrco_state: dsrco_state
@@ -5383,10 +6815,10 @@ components:
           dsg_acturi: dsg_acturi
           dsg_id: dsg_id
           dsg_geolocation:
-          - ds_loclat: 5.63737665663332876420099637471139430999755859375
-            ds_loclng: 2.3021358869347654518833223846741020679473876953125
-          - ds_loclat: 5.63737665663332876420099637471139430999755859375
-            ds_loclng: 2.3021358869347654518833223846741020679473876953125
+          - ds_loclat: 5.637376656633329
+            ds_loclng: 2.3021358869347655
+          - ds_loclat: 5.637376656633329
+            ds_loclng: 2.3021358869347655
           dsg_aconfigt: dsg_aconfigt
           dsg_aconfigv: latest
           dsg_actdate: dsg_actdate
@@ -5624,8 +7056,8 @@ components:
                 dsrn_rx_capacity: dsrn_rx_capacity
                 dsrn_isoverlay: true
                 dsrn_if_geolocation:
-                  ds_if_loclat: 4.863159081028840091676102019846439361572265625
-                  ds_if_loclng: 6.07389808578115175663469926803372800350189208984375
+                  ds_if_loclat: 4.86315908102884
+                  ds_if_loclng: 6.073898085781152
               - dsrn_if_ispname: dsrn_if_ispname
                 dsrn_address:
                 - dsrn_address
@@ -5690,14 +7122,14 @@ components:
                 dsrn_rx_capacity: dsrn_rx_capacity
                 dsrn_isoverlay: true
                 dsrn_if_geolocation:
-                  ds_if_loclat: 4.863159081028840091676102019846439361572265625
-                  ds_if_loclng: 6.07389808578115175663469926803372800350189208984375
+                  ds_if_loclat: 4.86315908102884
+                  ds_if_loclng: 6.073898085781152
             dsr_loadavg:
               dsrl_prunning: 6
               dsrl_pcount: 0
-              dsrl_l15min: 7.05877035158235610623478351044468581676483154296875
-              dsrl_l1min: 7.14353804701230643559028976596891880035400390625
-              dsrl_l5min: 0.885137473901165261480628032586537301540374755859375
+              dsrl_l15min: 7.058770351582356
+              dsrl_l1min: 7.143538047012306
+              dsrl_l5min: 0.8851374739011653
             dsr_containers:
             - dsrco_pcount: 0
               dsrco_state: dsrco_state
@@ -5716,10 +7148,10 @@ components:
             dsg_acturi: dsg_acturi
             dsg_id: dsg_id
             dsg_geolocation:
-            - ds_loclat: 5.63737665663332876420099637471139430999755859375
-              ds_loclng: 2.3021358869347654518833223846741020679473876953125
-            - ds_loclat: 5.63737665663332876420099637471139430999755859375
-              ds_loclng: 2.3021358869347654518833223846741020679473876953125
+            - ds_loclat: 5.637376656633329
+              ds_loclng: 2.3021358869347655
+            - ds_loclat: 5.637376656633329
+              ds_loclng: 2.3021358869347655
             dsg_aconfigt: dsg_aconfigt
             dsg_aconfigv: latest
             dsg_actdate: dsg_actdate
@@ -5968,6 +7400,8 @@ components:
           readOnly: true
         mdplc_name:
           type: string
+        mdplc_type:
+          type: string
         mdplc_device_services:
           type: array
           items:
@@ -5989,6 +7423,7 @@ components:
         - id: id
         mdplc_name: mdplc_name
         id: id
+        mdplc_type: mdplc_type
       allOf:
       - $ref: '#/components/schemas/ObjectProps'
     ManagedDevicePolicyList:
@@ -6012,6 +7447,7 @@ components:
           - id: id
           mdplc_name: mdplc_name
           id: id
+          mdplc_type: mdplc_type
         - mdplc_device_services:
           - mdplc_access_protocol: mdplc_access_protocol
             mdplc_access_port_range: mdplc_access_port_range
@@ -6024,6 +7460,7 @@ components:
           - id: id
           mdplc_name: mdplc_name
           id: id
+          mdplc_type: mdplc_type
       allOf:
       - $ref: '#/components/schemas/PagedResponse'
     ManagedDevicePolicyService:
@@ -6052,6 +7489,8 @@ components:
       properties:
         mdplc_name:
           type: string
+        mdplc_type:
+          type: string
         mdplc_device_services:
           type: array
           items:
@@ -6070,6 +7509,15 @@ components:
       example:
         networkTag: networkTag
         networkAddress: networkAddress
+    ClientIpv4PoolRanges_inner:
+      type: object
+      properties:
+        poolStart:
+          type: string
+          format: ipv4
+        poolEnd:
+          type: string
+          format: ipv4
     MQTTGCPConfiguration_topic:
       type: object
       properties:
@@ -6129,16 +7577,16 @@ components:
       properties:
         addressAssignment:
           type: string
+          default: dhcp
           enum:
           - static
           - dhcp
-          default: dhcp
         addressFamily:
           type: string
+          default: ipv4
           enum:
           - ipv4
           - ipv6
-          default: ipv4
         address:
           type: string
           format: ipv4
@@ -6171,10 +7619,10 @@ components:
       properties:
         protocol:
           type: string
+          default: wpa2_personal
           enum:
           - wpa2_personal
           - wpa2_enterprise
-          default: wpa2_personal
         key:
           maxLength: 63
           minLength: 8
@@ -6182,6 +7630,627 @@ components:
       example:
         protocol: wpa2_personal
         key: key
+    GatewaySysLoadStats_data:
+      type: object
+      properties:
+        avg_load_1min:
+          type: array
+          description: Aggregated average of system load samples taken in a 1 minute
+            rolling window
+          items:
+            type: number
+            format: float
+        avg_load_5min:
+          type: array
+          description: Aggregated average of system load samples taken in a 5 minute
+            rolling window
+          items:
+            type: number
+            format: float
+        avg_load_15min:
+          type: array
+          description: Aggregated average of system load samples taken in a 15 minute
+            rolling window
+          items:
+            type: number
+            format: float
+      example:
+        avg_load_15min:
+        - 1.4658129
+        - 1.4658129
+        avg_load_5min:
+        - 6.0274563
+        - 6.0274563
+        avg_load_1min:
+        - 0.8008282
+        - 0.8008282
+    GatewaySysUptimeStats_data:
+      type: object
+      properties:
+        avg_uptime:
+          type: array
+          description: Aggregated average of system uptime
+          items:
+            type: number
+            format: float
+      example:
+        avg_uptime:
+        - 0.8008282
+        - 0.8008282
+    GatewaySysMemoryStats_data:
+      type: object
+      properties:
+        avg_buffered:
+          type: array
+          description: Aggregated average of buffered memory in the system in KB
+          items:
+            type: number
+            format: float
+        avg_free:
+          type: array
+          description: Aggregated average of free memory in the system in KB
+          items:
+            type: number
+            format: float
+        avg_total:
+          type: array
+          description: Aggregated average of total memory available in the system
+            in KB
+          items:
+            type: number
+            format: float
+      example:
+        avg_free:
+        - 6.0274563
+        - 6.0274563
+        avg_total:
+        - 1.4658129
+        - 1.4658129
+        avg_buffered:
+        - 0.8008282
+        - 0.8008282
+    GatewaySysWiFiStrengthStats_data:
+      type: object
+      properties:
+        channel_num:
+          type: array
+          description: Channel number
+          items:
+            type: integer
+        errors:
+          type: array
+          description: Total errors encountered
+          items:
+            type: integer
+        rxrate:
+          type: array
+          description: RX rate in kbps
+          items:
+            type: integer
+        txrate:
+          type: array
+          description: TX rate in kbps
+          items:
+            type: integer
+        ssids:
+          type: array
+          description: WiFi SSIDs connected to
+          items:
+            type: array
+            items:
+              type: string
+        wifi_frequency:
+          type: array
+          description: Frequency of the WiFi SSID connected to
+          items:
+            type: integer
+        wifi_signal_strength:
+          type: array
+          description: WiFi signal strength in  dBm (decibel milliwatts)
+          items:
+            type: integer
+      example:
+        ssids:
+        - - ssids
+          - ssids
+        - - ssids
+          - ssids
+        wifi_frequency:
+        - 5
+        - 5
+        wifi_signal_strength:
+        - 2
+        - 2
+        channel_num:
+        - 0
+        - 0
+        txrate:
+        - 5
+        - 5
+        errors:
+        - 6
+        - 6
+        rxrate:
+        - 1
+        - 1
+    GatewaySysLTESignalStats_data:
+      type: object
+      properties:
+        avg_num_disconnects:
+          type: array
+          description: Aggregated average of disconnects count
+          items:
+            type: number
+            format: float
+        avg_signal_quality:
+          type: array
+          description: Aggregated average of signal quality
+          items:
+            type: number
+            format: float
+      example:
+        avg_signal_quality:
+        - 6.0274563
+        - 6.0274563
+        avg_num_disconnects:
+        - 0.8008282
+        - 0.8008282
+    GatewayWANAggregatedPathsAndLinksStats_data:
+      type: object
+      properties:
+        link:
+          type: string
+          description: Link through which traffic is sent
+        isp:
+          type: string
+          description: Name of the ISP to which the public ip belongs
+        ip:
+          type: string
+          description: IP of local interface forwarding the traffic
+        overlay_ip:
+          type: string
+          description: Overlay IP of the peer
+        peer:
+          type: string
+          description: "Name of the edge forwarding the traffic for paths, 'Link'\
+            \ for links"
+        latest_rx_bandwidth:
+          type: number
+          description: Receive capacity(bandwidth) of this link measured in bps
+          format: float
+        latest_tx_bandwidth:
+          type: number
+          description: Transmission capacity(bandwidth) of this link measured in bps
+          format: float
+        avg_tx_throughput:
+          type: number
+          description: Average number of bytes transmitted per sample interval
+          format: float
+        max_tx_throughput:
+          type: number
+          description: Max number of bytes transmitted in a sample interval
+          format: float
+        avg_rx_throughput:
+          type: number
+          description: Average number of bytes received per sample interval
+          format: float
+        max_rx_throughput:
+          type: number
+          description: Max number of bytes received in a sample interval
+          format: float
+        avg_latency:
+          type: number
+          description: Average latency measured in milli seconds
+          format: float
+        max_latency:
+          type: number
+          description: Max latency measured in milli seconds
+          format: float
+        avg_jitter:
+          type: number
+          description: Average jitter measurement in milli seconds
+          format: float
+        max_jitter:
+          type: number
+          description: Max jitter measurement in milli seconds
+          format: float
+        avg_loss:
+          type: number
+          description: Average traffic loss in percentage
+          format: float
+        max_loss:
+          type: number
+          description: Max traffic loss in percentage
+          format: float
+        total_rx_bytes:
+          type: number
+          description: Traffic received in this path/link in bytes
+          format: float
+        total_tx_bytes:
+          type: number
+          description: Traffic transmitted in this path/link in bytes
+          format: float
+        total_rx_packets:
+          type: number
+          description: Traffic received in this path/link in packets
+          format: float
+        total_tx_packets:
+          type: number
+          description: Traffic transmitted in this path/link in packets
+          format: float
+      example:
+        total_rx_packets: 1.4894159
+        avg_latency: 7.0614014
+        max_rx_throughput: 2.302136
+        isp: isp
+        ip: ip
+        link: link
+        latest_tx_bandwidth: 6.0274563
+        avg_rx_throughput: 5.637377
+        total_tx_packets: 6.846853
+        overlay_ip: overlay_ip
+        total_tx_bytes: 1.0246457
+        total_rx_bytes: 1.2315135
+        latest_rx_bandwidth: 0.8008282
+        avg_loss: 4.145608
+        max_loss: 7.386282
+        max_latency: 9.301444
+        peer: peer
+        max_jitter: 2.027123
+        avg_tx_throughput: 1.4658129
+        max_tx_throughput: 5.962134
+        avg_jitter: 3.6160767
+    GatewayDevicesAggregatedDeviceStats_data:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the connected LAN device
+        mac_addr:
+          type: string
+          description: Mac address of this device
+        ipv4:
+          type: string
+          description: IP address of the connected device
+        tx_bytes:
+          type: number
+          description: Total bytes transmitted by this device
+          format: float
+        rx_bytes:
+          type: number
+          description: Total bytes received by this device
+          format: float
+        tx_packets:
+          type: number
+          description: Total packets transmitted by this device
+          format: float
+        rx_packets:
+          type: number
+          description: Total packets received by this device
+          format: float
+        vnat_ips:
+          type: array
+          description: VPN NAT IPs used by this device
+          items:
+            type: string
+        flows_number:
+          type: number
+          description: Number of flows for this device
+          format: float
+      example:
+        tx_packets: 1.4658129
+        ipv4: ipv4
+        mac_addr: mac_addr
+        vnat_ips:
+        - vnat_ips
+        - vnat_ips
+        name: name
+        rx_bytes: 6.0274563
+        flows_number: 5.637377
+        tx_bytes: 0.8008282
+        rx_packets: 5.962134
+    GatewayDevicesAggregatedDeviceFlowStats_data:
+      type: object
+      properties:
+        src_ip:
+          type: string
+          description: IP address of the connected device
+        src_port:
+          type: string
+          description: Source port in the first packet of the flow
+        dest_ip:
+          type: string
+          description: Destination IP in the first packet of the flow
+        dest_port:
+          type: string
+          description: Destination port in the first packet of the flow
+        flow_first_packet_ts:
+          type: string
+          description: "Timestamp indicating the first packet arrival for this flow,\
+            \ in RFC 3339 format"
+        concat_policies:
+          type: string
+          description: Comma separated policies that were applied to this flow
+        concat_app_ids:
+          type: string
+          description: Comma separated application ids of this flow
+        concat_app_displaynames:
+          type: string
+          description: Comma separated application display names of this flow
+        tx_bytes:
+          type: number
+          description: Total bytes transmitted in this flow
+          format: float
+        rx_bytes:
+          type: number
+          description: Total bytes received in this flow
+          format: float
+        interface_rx:
+          type: string
+          description: Name of the interface through which first packet of this flow
+            was received.
+        interface_tx:
+          type: string
+          description: Name of the interface through which first packet of this flow
+            was sent out.
+        overlay_ip_tx:
+          type: string
+          description: The overlay ip of the remote peer to which first packet of
+            the flow was sent out.
+        link_name:
+          type: string
+          description: Name of the link used by the flow
+        scheduler_queue:
+          type: string
+          description: The scheduler queue assigned to this flow
+        avg_app_latency:
+          type: number
+          description: Average application latency measured in milliseconds
+          format: float
+        protocol_number:
+          type: number
+          description: The value of the protocol number in the IP packet header
+          format: float
+        flow_last_packet_ts:
+          type: string
+          description: "Timestamp indicating the last packet arrival for this flow,\
+            \ in RFC 3339 format"
+        dest_urls:
+          type: array
+          description: Destination URLs of this flow
+          items:
+            type: string
+        concat_peers:
+          type: string
+          description: Comma separated names of the remote peers to which packets
+            of the flow were sent out.
+        vnat_ips:
+          type: array
+          description: VPN NAT IPs used by this flow
+          items:
+            type: string
+      example:
+        flow_last_packet_ts: flow_last_packet_ts
+        dest_urls:
+        - dest_urls
+        - dest_urls
+        protocol_number: 5.962134
+        concat_app_displaynames: concat_app_displaynames
+        concat_policies: concat_policies
+        src_ip: src_ip
+        src_port: src_port
+        overlay_ip_tx: overlay_ip_tx
+        vnat_ips:
+        - vnat_ips
+        - vnat_ips
+        dest_ip: dest_ip
+        avg_app_latency: 1.4658129
+        interface_tx: interface_tx
+        rx_bytes: 6.0274563
+        scheduler_queue: scheduler_queue
+        concat_peers: concat_peers
+        concat_app_ids: concat_app_ids
+        link_name: link_name
+        dest_port: dest_port
+        flow_first_packet_ts: flow_first_packet_ts
+        tx_bytes: 0.8008282
+        interface_rx: interface_rx
+    GatewayInterfacesLatestStats_wifi_stats:
+      type: object
+      properties:
+        ssid:
+          type: string
+          description: WiFi SSID connected to
+        frequency:
+          type: integer
+          description: Frequency of the WiFi SSID connected to
+        signal_strength:
+          type: integer
+          description: WiFi signal strength in  dBm (decibel milliwatts)
+        rx_rate:
+          type: integer
+          description: RX rate in kbps
+        tx_rate:
+          type: integer
+          description: TX rate in kbps
+        channel_number:
+          type: integer
+          description: Channel number
+        errors_count:
+          type: integer
+          description: Total errors encountered
+      description: Managed wifi (client) mode connection stats
+      example:
+        rx_rate: 7
+        tx_rate: 9
+        signal_strength: 2
+        ssid: ssid
+        frequency: 5
+        channel_number: 3
+        errors_count: 2
+    GatewayInterfacesLatestStats_cellular_stats:
+      type: object
+      properties:
+        imei:
+          type: string
+          description: https://en.wikipedia.org/wiki/International_Mobile_Equipment_Identity
+        cell_id:
+          type: integer
+          description: https://en.wikipedia.org/wiki/Cell_Global_Identity
+        iccid:
+          type: string
+          description: https://en.wikipedia.org/wiki/SIM_card
+        signal_quality:
+          type: integer
+          description: Signal quality
+        apn:
+          type: string
+          description: https://en.wikipedia.org/wiki/Access_Point_Name
+      description: Cellular interface specific stats
+      example:
+        iccid: iccid
+        signal_quality: 7
+        imei: imei
+        cell_id: 4
+        apn: apn
+    GatewayInterfacesLatestStats_data:
+      type: object
+      properties:
+        bytes_rx:
+          type: integer
+          description: Amount of traffic received in this interface in bytes
+        bytes_tx:
+          type: integer
+          description: Amount of traffic transmitted in bytes
+        cidr_ip:
+          type: string
+          description: IP address of the interface along with netmask
+        isp:
+          type: string
+          description: Name of the ISP to which the public ip belongs
+        packets_rx:
+          type: integer
+          description: Amount of traffic received in this interface in packets
+        packets_tx:
+          type: integer
+          description: Amount of traffic transmitted in packets
+        public_ip:
+          type: string
+          description: IP of local interface forwarding the traffic
+        state:
+          type: string
+          description: Indicates whether this interface is up or down
+        type:
+          type: string
+          description: Type of the interface
+        wifi_stats:
+          $ref: '#/components/schemas/GatewayInterfacesLatestStats_wifi_stats'
+        cellular_stats:
+          $ref: '#/components/schemas/GatewayInterfacesLatestStats_cellular_stats'
+      example:
+        public_ip: public_ip
+        bytes_tx: 6
+        bytes_rx: 0
+        isp: isp
+        wifi_stats:
+          rx_rate: 7
+          tx_rate: 9
+          signal_strength: 2
+          ssid: ssid
+          frequency: 5
+          channel_number: 3
+          errors_count: 2
+        packets_tx: 5
+        cellular_stats:
+          iccid: iccid
+          signal_quality: 7
+          imei: imei
+          cell_id: 4
+          apn: apn
+        packets_rx: 1
+        state: state
+        type: type
+        cidr_ip: cidr_ip
+    GatewayPathsLatestStats_data:
+      type: object
+      properties:
+        bytes_rx:
+          type: integer
+          description: Traffic received in this path in bytes
+        bytes_tx:
+          type: integer
+          description: Traffic sent in this path in bytes
+        jitter:
+          type: integer
+          description: Jitter measure in this path
+        latency:
+          type: integer
+          description: Latency measure in this path
+        link:
+          type: string
+          description: Link through which traffic is sent
+        local_ip:
+          type: string
+          description: IP of local interface forwarding the traffic
+        loss_rx:
+          type: integer
+          description: Receive side loss in percentage
+        loss_tx:
+          type: integer
+          description: Transmit side loss in percentage
+        overlay_ip:
+          type: string
+          description: Overlay IP of the peer
+        overlay_ip_name:
+          type: string
+          description: Name of the edge forwarding the traffic
+        packets_rx:
+          type: integer
+          description: Traffic received in this path in packets
+        packets_tx:
+          type: integer
+          description: Traffic sent in this link in packets
+      example:
+        local_ip: local_ip
+        jitter: 1
+        bytes_tx: 6
+        loss_tx: 2
+        bytes_rx: 0
+        latency: 5
+        loss_rx: 5
+        link: link
+        packets_tx: 9
+        overlay_ip_name: overlay_ip_name
+        packets_rx: 7
+        overlay_ip: overlay_ip
+    GatewayRoutesLatestStats_data:
+      type: object
+      properties:
+        gateway_ip:
+          type: string
+          description: Gateway IP
+        gateway_name:
+          type: string
+          description: Gateway name
+        interface_name:
+          type: string
+          description: Interface name
+        metric:
+          type: integer
+          description: Route metric
+        netmask:
+          type: string
+          description: Network address/mask
+        route_type:
+          type: string
+          description: Route type
+      example:
+        metric: 0
+        netmask: netmask
+        route_type: route_type
+        interface_name: interface_name
+        gateway_ip: gateway_ip
+        gateway_name: gateway_name
     PolicyLinkSteeringAction_lnks_via_active:
       type: object
       properties:
@@ -6195,10 +8264,10 @@ components:
           - metered
         path:
           type: string
+          default: direct
           enum:
           - direct
           - overlay
-          default: direct
       example:
         path: direct
         lnks_wan: wired
@@ -6208,18 +8277,18 @@ components:
         lnks_wan:
           type: string
           description: the wan type to use see devicecfg->interface->overlay
+          default: private
           enum:
           - wired
           - wireless
           - private
           - metered
-          default: private
         path:
           type: string
+          default: direct
           enum:
           - direct
           - overlay
-          default: direct
       example:
         path: direct
         lnks_wan: private
@@ -6427,8 +8496,8 @@ components:
           description: Location of the edge found based on WAN public IP
           default: 0
       example:
-        ds_loclat: 5.63737665663332876420099637471139430999755859375
-        ds_loclng: 2.3021358869347654518833223846741020679473876953125
+        ds_loclat: 5.637376656633329
+        ds_loclng: 2.3021358869347655
     EdgeStatus_ds_devstatus_general:
       type: object
       properties:
@@ -6505,10 +8574,10 @@ components:
         dsg_acturi: dsg_acturi
         dsg_id: dsg_id
         dsg_geolocation:
-        - ds_loclat: 5.63737665663332876420099637471139430999755859375
-          ds_loclng: 2.3021358869347654518833223846741020679473876953125
-        - ds_loclat: 5.63737665663332876420099637471139430999755859375
-          ds_loclng: 2.3021358869347654518833223846741020679473876953125
+        - ds_loclat: 5.637376656633329
+          ds_loclng: 2.3021358869347655
+        - ds_loclat: 5.637376656633329
+          ds_loclng: 2.3021358869347655
         dsg_aconfigt: dsg_aconfigt
         dsg_aconfigv: latest
         dsg_actdate: dsg_actdate
@@ -6854,9 +8923,9 @@ components:
       example:
         dsrl_prunning: 6
         dsrl_pcount: 0
-        dsrl_l15min: 7.05877035158235610623478351044468581676483154296875
-        dsrl_l1min: 7.14353804701230643559028976596891880035400390625
-        dsrl_l5min: 0.885137473901165261480628032586537301540374755859375
+        dsrl_l15min: 7.058770351582356
+        dsrl_l1min: 7.143538047012306
+        dsrl_l5min: 0.8851374739011653
     EdgeStatus_ds_resusage_dsr_memory:
       type: object
       properties:
@@ -7017,8 +9086,8 @@ components:
           description: Location of the edge found based the public IP
           default: 0
       example:
-        ds_if_loclat: 4.863159081028840091676102019846439361572265625
-        ds_if_loclng: 6.07389808578115175663469926803372800350189208984375
+        ds_if_loclat: 4.86315908102884
+        ds_if_loclng: 6.073898085781152
     EdgeStatus_ds_resusage_dsr_network_dsrn_trafficstats:
       type: object
       properties:
@@ -7208,8 +9277,8 @@ components:
         dsrn_rx_capacity: dsrn_rx_capacity
         dsrn_isoverlay: true
         dsrn_if_geolocation:
-          ds_if_loclat: 4.863159081028840091676102019846439361572265625
-          ds_if_loclng: 6.07389808578115175663469926803372800350189208984375
+          ds_if_loclat: 4.86315908102884
+          ds_if_loclng: 6.073898085781152
     EdgeStatus_ds_resusage_dsr_network:
       type: object
       properties:
@@ -7283,8 +9352,8 @@ components:
           dsrn_rx_capacity: dsrn_rx_capacity
           dsrn_isoverlay: true
           dsrn_if_geolocation:
-            ds_if_loclat: 4.863159081028840091676102019846439361572265625
-            ds_if_loclng: 6.07389808578115175663469926803372800350189208984375
+            ds_if_loclat: 4.86315908102884
+            ds_if_loclng: 6.073898085781152
         - dsrn_if_ispname: dsrn_if_ispname
           dsrn_address:
           - dsrn_address
@@ -7349,8 +9418,8 @@ components:
           dsrn_rx_capacity: dsrn_rx_capacity
           dsrn_isoverlay: true
           dsrn_if_geolocation:
-            ds_if_loclat: 4.863159081028840091676102019846439361572265625
-            ds_if_loclng: 6.07389808578115175663469926803372800350189208984375
+            ds_if_loclat: 4.86315908102884
+            ds_if_loclng: 6.073898085781152
     EdgeStatus_ds_resusage:
       type: object
       properties:
@@ -7458,8 +9527,8 @@ components:
             dsrn_rx_capacity: dsrn_rx_capacity
             dsrn_isoverlay: true
             dsrn_if_geolocation:
-              ds_if_loclat: 4.863159081028840091676102019846439361572265625
-              ds_if_loclng: 6.07389808578115175663469926803372800350189208984375
+              ds_if_loclat: 4.86315908102884
+              ds_if_loclng: 6.073898085781152
           - dsrn_if_ispname: dsrn_if_ispname
             dsrn_address:
             - dsrn_address
@@ -7524,14 +9593,14 @@ components:
             dsrn_rx_capacity: dsrn_rx_capacity
             dsrn_isoverlay: true
             dsrn_if_geolocation:
-              ds_if_loclat: 4.863159081028840091676102019846439361572265625
-              ds_if_loclng: 6.07389808578115175663469926803372800350189208984375
+              ds_if_loclat: 4.86315908102884
+              ds_if_loclng: 6.073898085781152
         dsr_loadavg:
           dsrl_prunning: 6
           dsrl_pcount: 0
-          dsrl_l15min: 7.05877035158235610623478351044468581676483154296875
-          dsrl_l1min: 7.14353804701230643559028976596891880035400390625
-          dsrl_l5min: 0.885137473901165261480628032586537301540374755859375
+          dsrl_l15min: 7.058770351582356
+          dsrl_l1min: 7.143538047012306
+          dsrl_l5min: 0.8851374739011653
         dsr_containers:
         - dsrco_pcount: 0
           dsrco_state: dsrco_state
@@ -7692,6 +9761,80 @@ components:
       explode: false
       schema:
         type: string
+    IpParam:
+      name: ip
+      in: path
+      description: IP
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        format: ipv4
+    StartDatetime:
+      name: startDatetime
+      in: query
+      description: |-
+        Timestamp indicating the start of the queried time range, in ISO 8601 format.
+        For example '2019-05-08T05:30:30.206Z'
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+        format: date-time
+    EndDatetime:
+      name: endDatetime
+      in: query
+      description: |-
+        Timestamp indicating the end of the queried time range, in ISO 8601 format.
+        For example '2019-05-08T05:30:30.206Z'
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+        format: date-time
+    WanMetric:
+      name: metric
+      in: query
+      description: String indicating what metric is to be returned by wan statistics
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+        enum:
+        - latency
+        - jitter
+        - rx_loss
+        - tx_loss
+        - rx_throughput
+        - tx_throughput
+        - rx_bytes
+        - tx_bytes
+        - rx_packets
+        - tx_packets
+    FlowIP:
+      name: ip
+      in: query
+      description: IP of the device whose flow stats are to be obtained
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+        format: ipv4
+    GetTemplates:
+      name: getTemplates
+      in: query
+      description: "if present, templates will be obtained"
+      required: false
+      allowEmptyValue: true
+      style: form
+      explode: true
+      schema:
+        type: boolean
   securitySchemes:
     AuthToken:
       type: http

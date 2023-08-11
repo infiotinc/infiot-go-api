@@ -4,11 +4,53 @@ All URIs are relative to *https://virtserver.swaggerhub.com/infiot/infiot-api/v2
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**AddDenySourceIPRuleToPolicy**](PoliciesApi.md#AddDenySourceIPRuleToPolicy) | **Post** /policies/{id}/block-src-ip | Create new firewall block rule for a specific source IP
 [**AddPolicy**](PoliciesApi.md#AddPolicy) | **Post** /policies | Create new policy
+[**AddQoSSourceIPRuleToPolicy**](PoliciesApi.md#AddQoSSourceIPRuleToPolicy) | **Post** /policies/{id}/qos-rule-src-ip | Create new QoS rule for a specific source IP
+[**DeleteDenySourceIPRuleFromPolicy**](PoliciesApi.md#DeleteDenySourceIPRuleFromPolicy) | **Delete** /policies/{id}/block-src-ip/{ip} | Delete a policy firewall rule using match source IP
 [**DeletePolicyById**](PoliciesApi.md#DeletePolicyById) | **Delete** /policies/{id} | Delete policy using policy Id
+[**DeleteQoSSourceIPRuleFromPolicy**](PoliciesApi.md#DeleteQoSSourceIPRuleFromPolicy) | **Delete** /policies/{id}/qos-rule-src-ip/{ip} | Delete a policy QoS rule using match source IP
 [**GetAllPolicies**](PoliciesApi.md#GetAllPolicies) | **Get** /policies | List all policies
 [**GetPolicyById**](PoliciesApi.md#GetPolicyById) | **Get** /policies/{id} | Get policy using policy Id
 [**UpdatePolicyById**](PoliciesApi.md#UpdatePolicyById) | **Put** /policies/{id} | Update policy details using policy Id
+
+# **AddDenySourceIPRuleToPolicy**
+> Policy AddDenySourceIPRuleToPolicy(ctx, body, id, optional)
+Create new firewall block rule for a specific source IP
+
+Create a new firewall block rule in a policy of an organizant tenant. childTenantId is a mandatory parameter to be passed if the API is executed using a MSP or Master MSP tenant token. childTenantId should be organization tenant's Id when accessed from MasterMSP/MSP tenant. It can be empty when using an Organization tenant token. <br> <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token.<br>     | `childTenantId`      | Behavior |    |-----------------|-------------|    |  Not passed  | Error Message Code : `400`|    | Passed |Policy rule is created successfully based on the Request body args provided.
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **body** | [**AddPolicyFirewallRuleInput**](AddPolicyFirewallRuleInput.md)|  | 
+  **id** | **string**| Identifier | 
+ **optional** | ***PoliciesApiAddDenySourceIPRuleToPolicyOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a pointer to a PoliciesApiAddDenySourceIPRuleToPolicyOpts struct
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **childTenantId** | **optional.**| Tenant Id where the resource exists (Use this parameter if you wish to execute you query to a specific tenant). Make sure the Tenant should be a child of the Tenant where the API token is created | 
+
+### Return type
+
+[**Policy**](Policy.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **AddPolicy**
 > Policy AddPolicy(ctx, body, optional)
@@ -46,6 +88,82 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **AddQoSSourceIPRuleToPolicy**
+> Policy AddQoSSourceIPRuleToPolicy(ctx, body, id, optional)
+Create new QoS rule for a specific source IP
+
+Create a new QoS rule in a policy of an organizant tenant. childTenantId is a mandatory parameter to be passed if the API is executed using a MSP or Master MSP tenant token. childTenantId should be organization tenant's Id when accessed from MasterMSP/MSP tenant. It can be empty when using an Organization tenant token. <br> <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token.<br>     | `childTenantId`      | Behavior |    |-----------------|-------------|    |  Not passed  | Error Message Code : `400`|    | Passed |Policy rule is created successfully based on the Request body args provided.
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **body** | [**AddPolicyQoSRuleInput**](AddPolicyQoSRuleInput.md)|  | 
+  **id** | **string**| Identifier | 
+ **optional** | ***PoliciesApiAddQoSSourceIPRuleToPolicyOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a pointer to a PoliciesApiAddQoSSourceIPRuleToPolicyOpts struct
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **childTenantId** | **optional.**| Tenant Id where the resource exists (Use this parameter if you wish to execute you query to a specific tenant). Make sure the Tenant should be a child of the Tenant where the API token is created | 
+
+### Return type
+
+[**Policy**](Policy.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **DeleteDenySourceIPRuleFromPolicy**
+> Policy DeleteDenySourceIPRuleFromPolicy(ctx, id, ip, optional)
+Delete a policy firewall rule using match source IP
+
+Delete a policy firewall rule by passing the Policy id and source IP as a parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br> <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>     | `childTenantId`      | Behavior |    |-----------------|-------------|    |  Not passed  | Error Message Code : `400`|    | Passed |Policy rule is successfully deleted
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **id** | **string**| Identifier | 
+  **ip** | **string**| IP | 
+ **optional** | ***PoliciesApiDeleteDenySourceIPRuleFromPolicyOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a pointer to a PoliciesApiDeleteDenySourceIPRuleFromPolicyOpts struct
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **childTenantId** | **optional.String**| Tenant Id where the resource exists (Use this parameter if you wish to execute you query to a specific tenant). Make sure the Tenant should be a child of the Tenant where the API token is created | 
+
+### Return type
+
+[**Policy**](Policy.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **DeletePolicyById**
 > Policy DeletePolicyById(ctx, id, optional)
 Delete policy using policy Id
@@ -64,6 +182,44 @@ Name | Type | Description  | Notes
 Optional parameters are passed through a pointer to a PoliciesApiDeletePolicyByIdOpts struct
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+
+ **childTenantId** | **optional.String**| Tenant Id where the resource exists (Use this parameter if you wish to execute you query to a specific tenant). Make sure the Tenant should be a child of the Tenant where the API token is created | 
+
+### Return type
+
+[**Policy**](Policy.md)
+
+### Authorization
+
+[AuthToken](../README.md#AuthToken)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **DeleteQoSSourceIPRuleFromPolicy**
+> Policy DeleteQoSSourceIPRuleFromPolicy(ctx, id, ip, optional)
+Delete a policy QoS rule using match source IP
+
+Delete a policy QoS rule by passing the Policy id and source IP as a parameters. childTenantId that belongs to an Orgnaization tenant is required when the API is accessed using Master MSP/MSP tenant token. The new value/s of the edge should be populated on the Request body. childTenantId can be empty when using an Organization tenant token. <br> <b>Note</b> the difference in behavior when `childTenantId` is passed/not passed when using a MSP/Master MSP token. <br>     | `childTenantId`      | Behavior |    |-----------------|-------------|    |  Not passed  | Error Message Code : `400`|    | Passed |Policy rule is successfully deleted
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **id** | **string**| Identifier | 
+  **ip** | **string**| IP | 
+ **optional** | ***PoliciesApiDeleteQoSSourceIPRuleFromPolicyOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a pointer to a PoliciesApiDeleteQoSSourceIPRuleFromPolicyOpts struct
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
  **childTenantId** | **optional.String**| Tenant Id where the resource exists (Use this parameter if you wish to execute you query to a specific tenant). Make sure the Tenant should be a child of the Tenant where the API token is created | 
 
