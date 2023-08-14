@@ -3441,6 +3441,21 @@ components:
         assignedVirtualIPAddress:
           type: string
           format: ipv4
+      example:
+        dnsSuffixes:
+        - dnsSuffixes
+        - dnsSuffixes
+        ipv4DnsServers:
+        - ipv4DnsServers
+        - ipv4DnsServers
+        assignedVirtualIPAddress: assignedVirtualIPAddress
+        disableVif: true
+        ipv4PoolRanges:
+        - poolEnd: poolEnd
+          poolStart: poolStart
+        - poolEnd: poolEnd
+          poolStart: poolStart
+        alwaysOn: true
     ClientIpv4PoolRanges:
       type: array
       description: "IP Address Pools, can be used with Client models"
@@ -4078,6 +4093,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InterfaceSettings'
+        isTemplate:
+          type: boolean
+        clientConfiguration:
+          $ref: '#/components/schemas/ClientConfiguration'
       example:
         interfaces:
         - addresses:
@@ -4346,6 +4365,21 @@ components:
           publicIp: publicIp
           lanIp: lanIp
         swversion: swversion
+        clientConfiguration:
+          dnsSuffixes:
+          - dnsSuffixes
+          - dnsSuffixes
+          ipv4DnsServers:
+          - ipv4DnsServers
+          - ipv4DnsServers
+          assignedVirtualIPAddress: assignedVirtualIPAddress
+          disableVif: true
+          ipv4PoolRanges:
+          - poolEnd: poolEnd
+            poolStart: poolStart
+          - poolEnd: poolEnd
+            poolStart: poolStart
+          alwaysOn: true
         publicKey: publicKey
         assignedPolicy:
           name: name
@@ -4382,6 +4416,7 @@ components:
           name: name
           neighbor: neighbor
           bfdMultiplier: 5
+        isTemplate: true
         name: name
         model: iX100W
         id: id
@@ -4675,6 +4710,21 @@ components:
             publicIp: publicIp
             lanIp: lanIp
           swversion: swversion
+          clientConfiguration:
+            dnsSuffixes:
+            - dnsSuffixes
+            - dnsSuffixes
+            ipv4DnsServers:
+            - ipv4DnsServers
+            - ipv4DnsServers
+            assignedVirtualIPAddress: assignedVirtualIPAddress
+            disableVif: true
+            ipv4PoolRanges:
+            - poolEnd: poolEnd
+              poolStart: poolStart
+            - poolEnd: poolEnd
+              poolStart: poolStart
+            alwaysOn: true
           publicKey: publicKey
           assignedPolicy:
             name: name
@@ -4711,6 +4761,7 @@ components:
             name: name
             neighbor: neighbor
             bfdMultiplier: 5
+          isTemplate: true
           name: name
           model: iX100W
           id: id
@@ -4993,6 +5044,21 @@ components:
             publicIp: publicIp
             lanIp: lanIp
           swversion: swversion
+          clientConfiguration:
+            dnsSuffixes:
+            - dnsSuffixes
+            - dnsSuffixes
+            ipv4DnsServers:
+            - ipv4DnsServers
+            - ipv4DnsServers
+            assignedVirtualIPAddress: assignedVirtualIPAddress
+            disableVif: true
+            ipv4PoolRanges:
+            - poolEnd: poolEnd
+              poolStart: poolStart
+            - poolEnd: poolEnd
+              poolStart: poolStart
+            alwaysOn: true
           publicKey: publicKey
           assignedPolicy:
             name: name
@@ -5029,6 +5095,7 @@ components:
             name: name
             neighbor: neighbor
             bfdMultiplier: 5
+          isTemplate: true
           name: name
           model: iX100W
           id: id
@@ -7518,6 +7585,9 @@ components:
         poolEnd:
           type: string
           format: ipv4
+      example:
+        poolEnd: poolEnd
+        poolStart: poolStart
     MQTTGCPConfiguration_topic:
       type: object
       properties:

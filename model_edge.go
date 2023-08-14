@@ -44,4 +44,6 @@ type Edge struct {
 	One2OneNatRules        []InboundNatRule          `json:"one2OneNatRules,omitempty"`
 	PortForwardingNatRules []InboundNatRule          `json:"portForwardingNatRules,omitempty"`
 	Interfaces             []InterfaceSettings       `json:"interfaces,omitempty"`
+	IsTemplate             bool                      `json:"isTemplate,omitempty"`
+	ClientConfiguration    *ClientConfiguration      `json:"clientConfiguration,omitempty"`
 }
