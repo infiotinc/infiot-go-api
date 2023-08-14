@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **ModifiedBy** | [***UserRef**](UserRef.md) |  | [optional] [default to null]
 **Id** | **string** |  | [optional] [default to null]
 **MdplcName** | **string** |  | [optional] [default to null]
+**MdplcType** | **string** |  | [optional] [default to null]
 **MdplcDeviceServices** | [**[]ManagedDevicePolicyService**](ManagedDevicePolicyService.md) |  | [optional] [default to null]
 **MdplcUserGroups** | [**[]UserGroupRef**](UserGroupRef.md) |  | [optional] [default to null]
 

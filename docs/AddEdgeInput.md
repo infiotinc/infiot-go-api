@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **Role** | [***EdgeRole**](EdgeRole.md) |  | [optional] [default to null]
 **Serialnumber** | **string** |  | [optional] [default to null]
 **AssignedPolicy** | [***PolicyRef**](PolicyRef.md) |  | [optional] [default to null]
+**IsTemplate** | **bool** |  | [optional] [default to null]
+**Ipv4PoolRanges** | [***[]ClientIpv4PoolRangesInner**](array.md) |  | [optional] [default to null]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -23,7 +23,7 @@ Name | Type | Description | Notes
 **OverlaySetting** | [***OverlaySetting**](OverlaySetting.md) |  | [optional] [default to null]
 **Vrrp** | [***Vrrp**](Vrrp.md) |  | [optional] [default to null]
 **DhcpServerSetting** | [***DhcpServerSettings**](DhcpServerSettings.md) |  | [optional] [default to null]
-**DhcpRelayServerSetting** | [***DhcpRelayServerSettings**](DhcpRelayServerSettings.md) |  | [optional] [default to null]
+**DhcpRelayServerSetting** | [***[]string**](array.md) |  | [optional] [default to null]
 **DoAdvertise** | **bool** | advertise the interface subnet | [optional] [default to false]
 **Addresses** | [**[]InterfaceSettingsAddresses**](InterfaceSettings_addresses.md) |  | [optional] [default to null]
 

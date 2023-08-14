@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **ModifiedBy** | [***UserRef**](UserRef.md) |  | [optional] [default to null]
 **Id** | **string** |  | [optional] [default to null]
 **Name** | **string** | The name of the policy | [optional] [default to null]
+**Type_** | [***PolicyType**](PolicyType.md) |  | [optional] [default to null]
 **AssignedEdges** | **[]string** |  | [optional] [default to null]
 **Hubs** | [**[]EdgeRef**](EdgeRef.md) |  | [optional] [default to null]
 **Config** | [***PolicyConfig**](PolicyConfig.md) |  | [optional] [default to null]
