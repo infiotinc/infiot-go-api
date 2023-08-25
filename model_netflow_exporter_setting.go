@@ -11,6 +11,6 @@ package netskopebwan
 type NetflowExporterSetting struct {
 	NfExportInterval int32 `json:"nf_export_interval,omitempty"`
 	// TODO The `omitempty` below has been removed manually. We need to find a way to
-	// generate it loke this from swagger
+	// generate it like this from swagger
 	NfCollectorSettings []NetflowCollector `json:"nf_collector_settings"`
 }
