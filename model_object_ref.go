@@ -8,43 +8,7 @@
  */
 package netskopebwan
 
-import (
-	"time"
-)
-
-type Edge struct {
-	// Time object record was created in ISO 8601 format. For example 2019-05-08T05:30:30.206Z
-	DateCreated time.Time `json:"dateCreated,omitempty"`
-	// Time object record was last modified in ISO 8601 format. For example '2019-05-08T05:30:30.206Z'
-	DateModified time.Time  `json:"dateModified,omitempty"`
-	CreatedBy    *UserRef   `json:"createdBy,omitempty"`
-	ModifiedBy   *UserRef   `json:"modifiedBy,omitempty"`
-	Id           string     `json:"id,omitempty"`
-	Model        *EdgeModel `json:"model,omitempty"`
-	// The display name of the edge
+type ObjectRef struct {
+	Id   string `json:"id,omitempty"`
 	Name string `json:"name,omitempty"`
-	// Additional notes about the edge
-	Description string `json:"description,omitempty"`
-	// True if edge is activated
-	Activated bool      `json:"activated,omitempty"`
-	Role      *EdgeRole `json:"role,omitempty"`
-	// Serial number of the edge
-	Serialnumber string `json:"serialnumber,omitempty"`
-	// Version of the software manifest assigned to this edge
-	Swversion string `json:"swversion,omitempty"`
-	// URL of the software manifest assined to this edge
-	Swmanifest             string                    `json:"swmanifest,omitempty"`
-	OverlayConfiguration   *EdgeOverlayConfiguration `json:"overlayConfiguration,omitempty"`
-	Psk                    string                    `json:"psk,omitempty"`
-	PublicKey              string                    `json:"publicKey,omitempty"`
-	BgpConfiguration       []EdgeBgpConfiguration    `json:"bgpConfiguration,omitempty"`
-	StaticRoutes           []StaticRoute             `json:"staticRoutes,omitempty"`
-	MqttConfiguration      *MqttgcpConfiguration     `json:"mqttConfiguration,omitempty"`
-	AssignedPolicy         *PolicyRef                `json:"assignedPolicy,omitempty"`
-	One2OneNatRules        []InboundNatRule          `json:"one2OneNatRules,omitempty"`
-	PortForwardingNatRules []InboundNatRule          `json:"portForwardingNatRules,omitempty"`
-	Interfaces             []InterfaceSettings       `json:"interfaces,omitempty"`
-	IsTemplate             bool                      `json:"isTemplate,omitempty"`
-	ClientConfiguration    *ClientConfiguration      `json:"clientConfiguration,omitempty"`
-	Source                 *ObjectRef                `json:"source,omitempty"`
 }

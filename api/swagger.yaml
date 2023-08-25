@@ -4097,6 +4097,8 @@ components:
           type: boolean
         clientConfiguration:
           $ref: '#/components/schemas/ClientConfiguration'
+        source:
+          $ref: '#/components/schemas/ObjectRef'
       example:
         interfaces:
         - addresses:
@@ -4381,6 +4383,9 @@ components:
             poolStart: poolStart
           alwaysOn: true
         publicKey: publicKey
+        source:
+          name: name
+          id: id
         assignedPolicy:
           name: name
           id: id
@@ -4726,6 +4731,9 @@ components:
               poolStart: poolStart
             alwaysOn: true
           publicKey: publicKey
+          source:
+            name: name
+            id: id
           assignedPolicy:
             name: name
             id: id
@@ -5060,6 +5068,9 @@ components:
               poolStart: poolStart
             alwaysOn: true
           publicKey: publicKey
+          source:
+            name: name
+            id: id
           assignedPolicy:
             name: name
             id: id
@@ -5479,6 +5490,16 @@ components:
           type: string
         sourceObjectId:
           type: string
+    ObjectRef:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      example:
+        name: name
+        id: id
     AddEdgeInput:
       type: object
       properties:

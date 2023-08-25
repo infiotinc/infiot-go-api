@@ -167,6 +167,7 @@ Class | Method | HTTP request | Description
  - [NetflowCollector](docs/NetflowCollector.md)
  - [NetflowExporterSetting](docs/NetflowExporterSetting.md)
  - [ObjectProps](docs/ObjectProps.md)
+ - [ObjectRef](docs/ObjectRef.md)
  - [OverlaySetting](docs/OverlaySetting.md)
  - [PagedResponse](docs/PagedResponse.md)
  - [Policy](docs/Policy.md)
